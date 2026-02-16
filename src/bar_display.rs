@@ -1,13 +1,11 @@
 use std::io::{self, Stdout, stdout};
 
-use ratatui::{
-    Terminal,
-    backend::CrosstermBackend,
-    layout::Rect,
-    style::{Color, Modifier, Style, Stylize},
-    text::{Line, Span},
-    widgets::{Paragraph, Widget},
-};
+use ratatui::Terminal;
+use ratatui::backend::CrosstermBackend;
+use ratatui::layout::Rect;
+use ratatui::style::{Color, Modifier, Style};
+use ratatui::text::{Line, Span};
+use ratatui::widgets::{Paragraph, Widget};
 
 use crate::thermal::ThermalPressure;
 

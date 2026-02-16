@@ -2,3 +2,8 @@ project_name = "heattech"
 
 [tasks]
 install = "cargo install --locked --path ."
+fmt = "cargo +nightly fmt"
+fix = [
+  "cargo clippy --fix --allow-dirty",
+  "cargo +nightly fmt",
+]

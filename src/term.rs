@@ -1,5 +1,6 @@
-use color_print::cformat;
 use std::io::{Write, stdout};
+
+use color_print::cformat;
 
 use crate::thermal::ThermalPressure;
 

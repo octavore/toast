@@ -35,8 +35,8 @@ mkdir -p "$DIST"
 echo "Building $TARGET..."
 cargo build --release --target "$TARGET"
 
-echo "Packaging $TARGET to $DIST/${NAME}-${TARGET}.tar.gz..."
-tar -czf "$DIST/${NAME}-${TARGET}.tar.gz" -C "target/${TARGET}/release" "$NAME"
+echo "Packaging $TARGET to $DIST/${NAME}-${VERSION}.tar.gz..."
+tar -czf "$DIST/${NAME}-${VERSION}.tar.gz" -C "target/${TARGET}/release" "$NAME"
 
 DIST_CHECKSUM=$(shasum -a 256 "$DIST"/*.tar.gz | awk '{print $1}')
 
@@ -58,6 +58,6 @@ echo ""
 echo "Release $VERSION created successfully!"
 echo "Upload the following artifacts to the GitHub release page and push the tag with 'git push origin $VERSION':"
 echo ""
-echo "$DIST/${NAME}-${TARGET}.tar.gz"
+echo "$DIST/${NAME}-${VERSION}.tar.gz"
 echo "  version: $VERSION"
 echo "  checksum: $DIST_CHECKSUM"

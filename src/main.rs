@@ -7,7 +7,7 @@ use std::process::ExitCode;
 use std::thread;
 use std::time::Duration;
 
-use clap::Parser;
+use clap::{Parser, Subcommand};
 use color_print::ceprintln;
 
 use crate::mode::Mode;
@@ -15,15 +15,26 @@ use crate::thermal::{ThermalMonitor, ThermalPressure};
 
 const CHECK_INTERVAL: u64 = 5;
 
-/// macOS thermal throttle monitor
+/// View or monitor thermal pressure and throttling.
 #[derive(Parser)]
 #[command(name = "toast")]
+#[command(override_usage = "toast [watch [--bar]]")]
+#[command(disable_help_subcommand = true)]
 struct Cli {
-    /// Continuously monitor thermal state
-    #[arg(short, long)]
-    watch: bool,
+    #[command(subcommand)]
+    command: Option<Commands>,
+}
 
-    /// Show a vertical bar chart of history (requires --watch)
+#[derive(Subcommand)]
+enum Commands {
+    /// Monitor thermal state continuously
+    #[command(override_usage = "toast watch [--bar]")]
+    Watch(WatchArgs),
+}
+
+#[derive(Parser)]
+struct WatchArgs {
+    /// Show a vertical bar chart of history
     #[arg(short, long)]
     bar: bool,
 }
@@ -31,11 +42,12 @@ struct Cli {
 impl Cli {
     fn run(&self) -> Result<ExitCode, String> {
         let monitor = ThermalMonitor::new()?;
-        if self.watch {
-            let mode = Mode::try_new(self.bar)?;
-            Self::read_loop(&monitor, mode);
-        } else {
-            Self::read_once(&monitor)
+        match &self.command {
+            Some(Commands::Watch(args)) => {
+                let mode = Mode::try_new(args.bar)?;
+                Self::read_loop(&monitor, mode);
+            },
+            None => Self::read_once(&monitor),
         }
     }
 

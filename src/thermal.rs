@@ -33,6 +33,17 @@ impl ThermalPressure {
         }
     }
 
+    pub fn level(self) -> u64 {
+        match self {
+            Self::Nominal => 0,
+            Self::Moderate => 1,
+            Self::Heavy => 2,
+            Self::Trapping => 3,
+            Self::Sleeping => 4,
+            Self::Unknown(n) => n,
+        }
+    }
+
     pub fn is_throttled(self) -> bool {
         !matches!(self, Self::Nominal)
     }
@@ -67,21 +78,23 @@ pub struct ThermalMonitor {
 }
 
 impl ThermalMonitor {
-    pub fn new() -> Result<Self, u32> {
+    pub fn new() -> Result<Self, String> {
         let name = c"com.apple.system.thermalpressurelevel";
         let mut token: c_int = 0;
         let status = unsafe { notify_register_check(name.as_ptr(), &mut token) };
         if status != NOTIFY_STATUS_OK {
-            return Err(status);
+            return Err(format!(
+                "failed to register thermal notification (status: {status})"
+            ));
         }
         Ok(Self { token })
     }
 
-    pub fn read(&self) -> Result<ThermalPressure, u32> {
+    pub fn read(&self) -> Result<ThermalPressure, String> {
         let mut state: u64 = 0;
         let status = unsafe { notify_get_state(self.token, &mut state) };
         if status != NOTIFY_STATUS_OK {
-            return Err(status);
+            return Err(format!("failed to read thermal state (status: {status})"));
         }
         Ok(ThermalPressure::from_state(state))
     }

@@ -8,3 +8,6 @@ fix = [
   "cargo clippy --fix --allow-dirty",
   "cargo +nightly fmt",
 ]
+
+[packages]
+rust = "nightly"

@@ -1,1 +1,5 @@
-packages = []
+[[packages]]
+name = "rust"
+version = "nightly"
+backend = "rust"
+sources = [""]

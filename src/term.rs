@@ -14,6 +14,11 @@ pub fn status(msg: &str) {
     let _ = stdout().flush();
 }
 
+pub fn timestamp() -> String {
+    let now = chrono::Local::now().format("%H:%M:%S");
+    cformat!("<dim>{now}</>")
+}
+
 pub fn colored_label(pressure: ThermalPressure) -> String {
     match pressure {
         ThermalPressure::Nominal => cformat!("<green,bold>Nominal</>"),

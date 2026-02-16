@@ -2,7 +2,7 @@ mod term;
 mod thermal;
 
 use clap::Parser;
-use color_print::cprintln;
+use color_print::{ceprintln, cprintln};
 use std::process::ExitCode;
 use std::thread;
 use std::time::Duration;
@@ -32,7 +32,7 @@ fn main() -> ExitCode {
     };
 
     if cli.watch {
-        eprintln!("<green>Watching thermal pressure</green> <dim>(Ctrl+C to stop)</dim>");
+        ceprintln!("<green>Watching thermal pressure</green> <dim>(Ctrl+C to stop)</dim>");
         let mut last: Option<ThermalPressure> = None;
         loop {
             match monitor.read() {
@@ -40,7 +40,8 @@ fn main() -> ExitCode {
                     if last != Some(pressure) {
                         term::clear_line();
                         cprintln!(
-                            "Thermal pressure: {} <dim>({})</dim>",
+                            "{} {} <dim>({})</dim>",
+                            term::timestamp(),
                             term::colored_label(pressure),
                             pressure.description()
                         );

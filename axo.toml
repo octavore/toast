@@ -1,6 +1,7 @@
-project_name = "heattech"
+project_name = "toast"
 
 [tasks]
+build = "cargo build"
 install = "cargo install --locked --path ."
 fmt = "cargo +nightly fmt"
 fix = [

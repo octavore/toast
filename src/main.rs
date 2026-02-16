@@ -17,7 +17,7 @@ const CHECK_INTERVAL: u64 = 5;
 
 /// macOS thermal throttle monitor
 #[derive(Parser)]
-#[command(name = "heattech")]
+#[command(name = "toast")]
 struct Cli {
     /// Continuously monitor thermal state
     #[arg(short, long)]

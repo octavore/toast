@@ -9,6 +9,8 @@ unsafe extern "C" {
     fn notify_cancel(token: c_int) -> c_uint;
 }
 
+// values from OSThermalNotification.h
+// https://github.com/tripleCC/Laboratory/blob/a7d1192f25d718e3b01a015ca35bfcef4419e883/AppleSources/Libc-1272.250.1/include/libkern/OSThermalNotification.h#L44-L48
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ThermalPressure {
     Nominal,
